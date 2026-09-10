@@ -1,0 +1,6 @@
+.next
+node_modules
+design-system
+playwright-report
+test-results
+public/resume/*.pdf

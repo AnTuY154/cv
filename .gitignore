@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Generic build and coverage output
+dist/
+build/
+coverage/
+
+# Test artifacts
+test-results/
+playwright-report/
+blob-report/
+
+# Local temporary files and caches
+tmp/
+*.tsbuildinfo
+*.log
+
+# Local environment files
+.env*
+!.env.example
+
+# Hosting and operating-system files
+.vercel/
+.DS_Store
