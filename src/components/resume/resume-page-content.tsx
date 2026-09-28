@@ -95,7 +95,7 @@ export function ResumePageContent() {
               <p className="eyebrow">{dictionary.resume.projectsEyebrow}</p>
               <h3 id="resume-projects-title">{dictionary.resume.projectsTitle}</h3>
             </div>
-            <Link className="text-link" href="/#work">
+            <Link className="text-link" href="/#experience">
               {dictionary.resume.viewCaseStudies} <ArrowUpRight size={16} aria-hidden="true" />
             </Link>
           </div>
@@ -111,6 +111,9 @@ export function ResumePageContent() {
                 >
                   <span>{getDomainLabel(project.domain, language)}</span>
                   <strong>{project.name}</strong>
+                  <small>
+                    {[project.role, formatPeriod(project.period, language)].filter(Boolean).join(" · ")}
+                  </small>
                   <p>{copy.summary}</p>
                   <ArrowUpRight size={16} aria-hidden="true" />
                 </Link>

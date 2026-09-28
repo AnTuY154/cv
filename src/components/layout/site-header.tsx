@@ -9,7 +9,6 @@ import { useLanguage } from "@/components/i18n/language-provider";
 import { LanguageSwitcher } from "@/components/i18n/language-switcher";
 
 const navigation = [
-  { key: "work", href: "/#work" },
   { key: "experience", href: "/#experience" },
   { key: "skills", href: "/#skills" },
   { key: "about", href: "/#about" },

@@ -3,35 +3,49 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from reportlab.lib.colors import HexColor, white
+from reportlab.lib.colors import HexColor
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
 
 
-PAGE_WIDTH, PAGE_HEIGHT = A4
+PAGE_W, PAGE_H = A4
 MARGIN = 42
-CONTENT_WIDTH = PAGE_WIDTH - (MARGIN * 2)
-
-BLUE = HexColor("#2563EB")
-NAVY = HexColor("#1E293B")
-SLATE = HexColor("#475569")
-MUTED = HexColor("#64748B")
-BORDER = HexColor("#E2E8F0")
-PALE_BLUE = HexColor("#EFF6FF")
-PALE_ORANGE = HexColor("#FFF7ED")
-ORANGE = HexColor("#C2410C")
-BACKGROUND = HexColor("#F8FAFC")
-
-FONT_PATH = "/System/Library/Fonts/Supplemental/Arial.ttf"
-BOLD_FONT_PATH = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
-
-pdfmetrics.registerFont(TTFont("PortfolioArial", FONT_PATH))
-pdfmetrics.registerFont(TTFont("PortfolioArial-Bold", BOLD_FONT_PATH))
+WIDTH = PAGE_W - MARGIN * 2
+INK = HexColor("#172033")
+BLUE = HexColor("#1959D1")
+ORANGE = HexColor("#E45D22")
+SLATE = HexColor("#566176")
+LINE = HexColor("#DFE3EB")
+PAPER = HexColor("#FFFFFF")
+SOFT_BLUE = HexColor("#EDF4FF")
 
 
-def wrap_text(text: str, font: str, size: float, width: float) -> list[str]:
+def register_fonts() -> None:
+    candidates = [
+        (
+            Path("C:/Windows/Fonts/arial.ttf"),
+            Path("C:/Windows/Fonts/arialbd.ttf"),
+        ),
+        (
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+            Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"),
+        ),
+        (
+            Path("/System/Library/Fonts/Supplemental/Arial.ttf"),
+            Path("/System/Library/Fonts/Supplemental/Arial Bold.ttf"),
+        ),
+    ]
+    for regular, bold in candidates:
+        if regular.exists() and bold.exists():
+            pdfmetrics.registerFont(TTFont("CV", str(regular)))
+            pdfmetrics.registerFont(TTFont("CV-Bold", str(bold)))
+            return
+    raise FileNotFoundError("A Unicode TrueType font is required to build the resume PDF.")
+
+
+def wrap(text: str, font: str, size: float, width: float) -> list[str]:
     lines: list[str] = []
     current = ""
     for word in text.split():
@@ -46,210 +60,224 @@ def wrap_text(text: str, font: str, size: float, width: float) -> list[str]:
     return lines
 
 
-def draw_text(canvas: Canvas, text: str, x: float, y: float, width: float, *, font: str = "PortfolioArial", size: float = 9.5, leading: float = 13, color=SLATE) -> float:
-    canvas.setFont(font, size)
-    canvas.setFillColor(color)
-    for line in wrap_text(text, font, size, width):
-        canvas.drawString(x, y, line)
+def text(c: Canvas, value: str, x: float, y: float, width: float, *, font: str = "CV", size: float = 8.5, leading: float = 11.5, color=SLATE) -> float:
+    c.setFont(font, size)
+    c.setFillColor(color)
+    for line in wrap(value, font, size, width):
+        c.drawString(x, y, line)
         y -= leading
     return y
 
 
-def draw_label(canvas: Canvas, text: str, x: float, y: float) -> None:
-    canvas.setFillColor(BLUE)
-    canvas.setFont("PortfolioArial-Bold", 8)
-    canvas.drawString(x, y, text.upper())
+def label(c: Canvas, value: str, x: float, y: float, color=BLUE) -> None:
+    c.setFillColor(color)
+    c.setFont("CV-Bold", 7.5)
+    c.drawString(x, y, value.upper())
 
 
-def draw_rule(canvas: Canvas, y: float) -> None:
-    canvas.setStrokeColor(BORDER)
-    canvas.setLineWidth(0.7)
-    canvas.line(MARGIN, y, PAGE_WIDTH - MARGIN, y)
+def page_frame(c: Canvas, page: int) -> None:
+    c.setFillColor(PAPER)
+    c.rect(0, 0, PAGE_W, PAGE_H, fill=1, stroke=0)
+    c.setFillColor(BLUE)
+    c.rect(0, PAGE_H - 8, PAGE_W, 8, fill=1, stroke=0)
+    c.setStrokeColor(LINE)
+    c.line(MARGIN, 27, PAGE_W - MARGIN, 27)
+    c.setFillColor(SLATE)
+    c.setFont("CV", 7)
+    c.drawString(MARGIN, 16, "ĐỖ TRỌNG ANH TUẤN · FRONTEND ENGINEER / FRONTEND LEAD")
+    c.drawRightString(PAGE_W - MARGIN, 16, f"{page} / 2")
 
 
-def draw_header(canvas: Canvas, page_label: str) -> None:
-    canvas.setFillColor(BACKGROUND)
-    canvas.rect(0, 0, PAGE_WIDTH, PAGE_HEIGHT, fill=1, stroke=0)
-    canvas.setFillColor(BLUE)
-    canvas.rect(0, PAGE_HEIGHT - 10, PAGE_WIDTH, 10, fill=1, stroke=0)
-    canvas.setFillColor(NAVY)
-    canvas.setFont("PortfolioArial-Bold", 8)
-    canvas.drawRightString(PAGE_WIDTH - MARGIN, 24, page_label)
+def section(c: Canvas, title: str, y: float) -> float:
+    c.setStrokeColor(LINE)
+    c.line(MARGIN, y, PAGE_W - MARGIN, y)
+    y -= 19
+    label(c, title, MARGIN, y)
+    return y - 19
 
 
-def draw_pill(canvas: Canvas, text: str, x: float, y: float, fill=PALE_BLUE, color=BLUE) -> float:
-    width = pdfmetrics.stringWidth(text, "PortfolioArial-Bold", 7.4) + 16
-    canvas.setFillColor(fill)
-    canvas.roundRect(x, y - 4, width, 20, 10, fill=1, stroke=0)
-    canvas.setFillColor(color)
-    canvas.setFont("PortfolioArial-Bold", 7.4)
-    canvas.drawString(x + 8, y + 3, text)
-    return x + width + 7
-
-
-def draw_experience_item(canvas: Canvas, company: str, role: str, period: str, description: str, y: float) -> float:
-    canvas.setFillColor(NAVY)
-    canvas.setFont("PortfolioArial-Bold", 10.5)
-    canvas.drawString(MARGIN, y, company)
-    canvas.setFillColor(BLUE)
-    canvas.setFont("PortfolioArial-Bold", 8)
-    canvas.drawRightString(PAGE_WIDTH - MARGIN, y, period)
+def project(c: Canvas, y: float, *, period: str, name: str, role: str, client: str, summary: str, evidence: str, tech: str, ongoing: bool = False) -> float:
+    c.setFillColor(ORANGE if ongoing else BLUE)
+    c.rect(MARGIN, y - 4, 3, 4, fill=1, stroke=0)
+    c.setFillColor(INK)
+    c.setFont("CV-Bold", 10)
+    c.drawString(MARGIN + 10, y, name)
+    c.setFillColor(BLUE)
+    c.setFont("CV-Bold", 7.5)
+    c.drawRightString(PAGE_W - MARGIN, y, period)
     y -= 13
-    canvas.setFillColor(BLUE)
-    canvas.setFont("PortfolioArial-Bold", 8.5)
-    canvas.drawString(MARGIN, y, role)
-    y -= 12
-    y = draw_text(canvas, description, MARGIN, y, CONTENT_WIDTH, size=8.5, leading=11.5)
-    return y - 10
-
-
-def draw_project_card(canvas: Canvas, x: float, y: float, width: float, height: float, domain: str, name: str, summary: str, accent=BLUE) -> None:
-    canvas.setFillColor(white)
-    canvas.setStrokeColor(BORDER)
-    canvas.setLineWidth(0.7)
-    canvas.roundRect(x, y - height, width, height, 9, fill=1, stroke=1)
-    canvas.setFillColor(accent)
-    canvas.roundRect(x, y - 4, width, 4, 2, fill=1, stroke=0)
-    draw_label(canvas, domain, x + 13, y - 22)
-    canvas.setFillColor(NAVY)
-    canvas.setFont("PortfolioArial-Bold", 10)
-    canvas.drawString(x + 13, y - 39, name)
-    draw_text(canvas, summary, x + 13, y - 54, width - 26, size=8, leading=10.5)
+    meta = " · ".join(part for part in [role, client] if part)
+    c.setFillColor(SLATE)
+    c.setFont("CV-Bold", 7.5)
+    c.drawString(MARGIN + 10, y, meta)
+    y -= 11
+    y = text(c, summary, MARGIN + 10, y, WIDTH - 10, size=8, leading=10.2)
+    y = text(c, f"Impact — {evidence}", MARGIN + 10, y - 1, WIDTH - 10, font="CV-Bold", size=7.8, leading=10.2, color=INK)
+    c.setFillColor(BLUE)
+    c.setFont("CV", 7.2)
+    c.drawString(MARGIN + 10, y - 1, tech)
+    return y - 15
 
 
 def build_pdf(output: Path) -> None:
+    register_fonts()
     output.parent.mkdir(parents=True, exist_ok=True)
-    canvas = Canvas(str(output), pagesize=A4, pageCompression=1)
-    canvas.setTitle("Anh Tuan - Software Engineer Resume")
-    canvas.setAuthor("Đỗ Trọng Anh Tuấn")
+    c = Canvas(str(output), pagesize=A4, pageCompression=1)
+    c.setTitle("Do Trong Anh Tuan — Frontend Engineer / Frontend Lead")
+    c.setAuthor("Đỗ Trọng Anh Tuấn")
 
-    # Page 1: profile, experience, and selected work.
-    draw_header(canvas, "ANH TUAN / 01")
-    x = MARGIN
-    y = PAGE_HEIGHT - 62
-    draw_label(canvas, "Frontend-focused Software Engineer", x, y)
-    y -= 28
-    canvas.setFillColor(NAVY)
-    canvas.setFont("PortfolioArial-Bold", 29)
-    canvas.drawString(x, y, "Đỗ Trọng Anh Tuấn")
-    y -= 21
-    canvas.setFillColor(SLATE)
-    canvas.setFont("PortfolioArial", 9)
-    canvas.drawString(x, y, "Hanoi, Vietnam")
-    y -= 27
-    y = draw_text(canvas, "Frontend-focused Software Engineer with 5 years of experience building enterprise web products with React and Next.js. Experienced in design-system implementation, application modernization, SEO, data-rich interfaces, code review, and cross-functional delivery.", x, y, CONTENT_WIDTH, size=9.5, leading=13)
-    y -= 13
-    next_x = x
-    next_x = draw_pill(canvas, "5 years delivery", next_x, y)
-    next_x = draw_pill(canvas, "14 completed + 1 ongoing", next_x, y)
-    draw_pill(canvas, "React 2020 / Next.js 2023", next_x, y)
-    y -= 35
-    draw_rule(canvas, y)
-    y -= 25
-    draw_label(canvas, "Experience", x, y)
+    # Page 1 — recruiter summary and strongest, most recent evidence.
+    page_frame(c, 1)
+    y = PAGE_H - 54
+    label(c, "Frontend Engineer / Frontend Lead", MARGIN, y)
+    y -= 31
+    c.setFillColor(INK)
+    c.setFont("CV-Bold", 27)
+    c.drawString(MARGIN, y, "Đỗ Trọng Anh Tuấn")
+    y -= 17
+    c.setFillColor(SLATE)
+    c.setFont("CV", 8.5)
+    c.drawString(MARGIN, y, "Hanoi, Vietnam · 6 years of frontend experience")
     y -= 22
-    y = draw_experience_item(canvas, "HBLAB JSC", "Software Engineer", "Jan 2023 - Jan 2026", "Software engineering across management tools, dashboards, payments, observability, and marketing platforms.", y)
-    y = draw_experience_item(canvas, "Viettel Software Service", "Software Engineer", "Sep 2022 - Jan 2023", "Software engineering for Viettel Family registration and audit workflows.", y)
-    y = draw_experience_item(canvas, "FPT Software", "Software Engineer", "Sep 2020 - Aug 2022", "Software engineering across enterprise requirements and component-system work.", y)
-    y -= 2
-    draw_rule(canvas, y)
-    y -= 25
-    draw_label(canvas, "Selected projects", x, y)
-    y -= 17
-    canvas.setFillColor(SLATE)
-    canvas.setFont("PortfolioArial", 8.5)
-    canvas.drawString(x, y, "Verified project records with deeper case-study pages available in the web portfolio.")
-    y -= 17
-
-    gap = 11
-    card_width = (CONTENT_WIDTH - gap) / 2
-    card_height = 72
-    projects = [
-        ("Automotive services", "OneAuto", "Services for automotive workshops in the TASCO ecosystem.", ORANGE),
-        ("Marketing platform", "HP Booster", "A drag-and-drop marketing website builder.", ORANGE),
-        ("Observability tooling", "Grafana Tools", "Modernization from Grafana 6.3.4 to Grafana 12.2.", HexColor("#7C3AED")),
-        ("Payments", "Kotoba Stripe", "Online payment and account-management workflows.", HexColor("#15803D")),
-        ("Building management", "Commerce", "Building management and data analysis with map integrations.", HexColor("#0E7490")),
-        ("UI engineering", "AIA Components", "A component system supported by Storybook and E2E testing.", HexColor("#4338CA")),
-    ]
-    for index, (domain, name, summary, accent) in enumerate(projects):
-        row = index // 2
-        column = index % 2
-        draw_project_card(canvas, x + column * (card_width + gap), y - row * (card_height + gap), card_width, card_height, domain, name, summary, accent)
-
-    canvas.showPage()
-
-    # Page 2: capabilities and current project context.
-    draw_header(canvas, "ANH TUAN / 02")
-    y = PAGE_HEIGHT - 62
-    draw_label(canvas, "Capabilities", x, y)
-    y -= 25
-    canvas.setFillColor(NAVY)
-    canvas.setFont("PortfolioArial-Bold", 22)
-    canvas.drawString(x, y, "A capability map for practical product work")
-    y -= 18
-    y = draw_text(canvas, "Frontend craft, integration depth, and delivery habits grouped around the problems they help solve.", x, y, CONTENT_WIDTH, size=9.5, leading=13)
-    y -= 23
-
+    y = text(
+        c,
+        "I turn complex operations into clear, maintainable interfaces. My experience spans hands-on delivery, API integration, UI/UX collaboration, task breakdown, and frontend leadership across React, Next.js, and Vue 3 products.",
+        MARGIN,
+        y,
+        WIDTH,
+        size=9,
+        leading=12.2,
+        color=INK,
+    )
+    y -= 7
+    c.setFillColor(SOFT_BLUE)
+    c.roundRect(MARGIN, y - 29, WIDTH, 29, 6, fill=1, stroke=0)
+    c.setFillColor(BLUE)
+    c.setFont("CV-Bold", 7.7)
+    c.drawString(MARGIN + 12, y - 18, "REACT · NEXT.JS · VUE 3")
+    c.drawCentredString(PAGE_W / 2, y - 18, "BUILD · INTEGRATE · LEAD")
+    c.drawRightString(PAGE_W - MARGIN - 12, y - 18, "HBLAB · VIETTEL · FPT")
+    y -= 44
+    y = section(c, "Recent project timeline · HBLAB JSC · Jan 2023 — Present", y)
+    y = project(
+        c, y, period="JAN 2026 — PRESENT", name="OneAuto", role="Frontend Developer · Full-time onsite", client="TASCO Group",
+        summary="Automotive workshop operations covering repair orders, accessory sales, and roadside assistance.",
+        evidence="Owned requirement analysis, flows, frontend, APIs, validation, permissions, and testing; proposed an in-order customer/vehicle-owner drawer that was approved and delivered.",
+        tech="Vue 3 · TypeScript · Vue Router · Ant Design Vue", ongoing=True,
+    )
+    y = project(
+        c, y, period="MAR 2026 — MAY 2026", name="Commerce Convert", role="Frontend Lead · 50% allocation", client="Auto Magic",
+        summary="One-month React-to-Next.js conversion completed with one other frontend developer.",
+        evidence="Evaluated libraries, guided the migration, and reviewed code to improve SEO and standardize the group framework.",
+        tech="React · Next.js · SEO",
+    )
+    y = project(
+        c, y, period="APR 2025 — PRESENT", name="Property", role="Frontend Developer", client="Auto Magic",
+        summary="Modern rebuild of a legacy building-accounting and financial-information system.",
+        evidence="Rebuilt the UI, investigated APIs, and helped the BA recover business rules from outdated documentation.",
+        tech="Next.js · Ant Design", ongoing=True,
+    )
+    y = project(
+        c, y, period="DEC 2024 — JUN 2026", name="HP Booster", role="Frontend Sub-lead · Led 3 FE", client="Tryhatch",
+        summary="Drag-and-drop marketing website builder migrated from React to Next.js.",
+        evidence="Reassessed the frontend foundation, planned and coded the migration, improving SEO readiness and maintainability.",
+        tech="React · Next.js · SEO",
+    )
+    y = project(
+        c, y, period="APR 2023 — JAN 2026", name="KPro", role="Developer → Frontend Lead", client="Auto Magic",
+        summary="Enterprise content platform with upload, file lists, and a deeply nested tree menu.",
+        evidence="Led task breakdown, solutions, UI/UX, and reviews; built infinite scroll for large, deeply nested node sets to improve performance.",
+        tech="Next.js · Ant Design · Infinite scroll",
+    )
+    y = section(c, "Core capabilities", y + 2)
     capabilities = [
-        ("Frontend", "JavaScript, React, Next.js, HTML, CSS, Responsive UI"),
-        ("UI engineering", "Storybook, Figma-to-code, Component systems, E2E testing"),
-        ("Backend & integration", "Node.js, Express, Java, Python, C#, REST APIs"),
-        ("Product integrations", "Stripe, Google Maps, Terra Map, Grafana"),
-        ("Delivery", "GitLab, Code review, Estimation, Deployment support, SEO"),
+        ("PRODUCT FRONTEND", "React · Next.js · Vue 3 · TypeScript · React Native"),
+        ("UI SYSTEMS", "Ant Design · Storybook · Atomic Design · Playwright"),
+        ("INTEGRATION", "REST APIs · Stripe · Google Maps · Terra Map · Grafana"),
+        ("LEADERSHIP", "Requirement analysis · Task breakdown · Code review · UI/UX collaboration"),
     ]
-    card_height = 83
-    card_width = (CONTENT_WIDTH - gap) / 2
-    for index, (label, skills) in enumerate(capabilities):
+    column_width = (WIDTH - 20) / 2
+    for index, (capability, details) in enumerate(capabilities):
+        col = index % 2
         row = index // 2
-        column = index % 2
-        card_x = x + column * (card_width + gap)
-        card_y = y - row * (card_height + gap)
-        draw_project_card(canvas, card_x, card_y, card_width, card_height, label, "", skills, BLUE if index % 2 == 0 else HexColor("#64748B"))
+        cap_x = MARGIN + col * (column_width + 20)
+        cap_y = y - row * 42
+        label(c, capability, cap_x, cap_y)
+        text(c, details, cap_x, cap_y - 12, column_width, size=7.7, leading=10)
+    c.showPage()
 
-    y = y - 3 * (card_height + gap) - 3
-    draw_rule(canvas, y)
-    y -= 26
-    draw_label(canvas, "Current project context", x, y)
+    # Page 2 — supporting project chronology and earlier companies.
+    page_frame(c, 2)
+    y = PAGE_H - 50
+    label(c, "Additional project timeline", MARGIN, y)
     y -= 22
-    canvas.setFillColor(PALE_ORANGE)
-    canvas.roundRect(x, y - 107, CONTENT_WIDTH, 107, 12, fill=1, stroke=0)
-    canvas.setFillColor(ORANGE)
-    canvas.setFont("PortfolioArial-Bold", 8)
-    canvas.drawString(x + 18, y - 21, "ONGOING / JAN 2026 - PRESENT")
-    canvas.setFillColor(NAVY)
-    canvas.setFont("PortfolioArial-Bold", 18)
-    canvas.drawString(x + 18, y - 45, "OneAuto")
-    canvas.setFillColor(SLATE)
-    canvas.setFont("PortfolioArial", 9)
-    canvas.drawString(x + 18, y - 63, "Services for automotive workshops in the TASCO ecosystem.")
-    draw_pill(canvas, "Next.js", x + 18, y - 88, fill=white, color=BLUE)
-    draw_pill(canvas, "Java", x + 75, y - 88, fill=white, color=BLUE)
+    y = project(
+        c, y, period="JUN 2025", name="PFD Maintain", role="Reviewer only · 50% allocation", client="Auto Magic",
+        summary="Short extension adding PDF upload and viewing that had been absent from KPro.",
+        evidence="Reviewed the solution and implementation; did not claim direct feature delivery.",
+        tech="React · Next.js · PDF",
+    )
+    y = project(
+        c, y, period="DEC 2024 — MAY 2025", name="MUSA PMS", role="Frontend Lead · 3 FE", client="MUSA",
+        summary="Admin product for work, time, leave, working days, and Gantt planning.",
+        evidence="Led estimation and delivery, customized the gantt-task-react timeline, and reached customer acceptance.",
+        tech="React · gantt-task-react",
+    )
+    y = project(
+        c, y, period="DEC 2024 — JAN 2026", name="Grafana Customization", role="Frontend Developer", client="Yokogawa Digital",
+        summary="Reimplemented customer-specific behavior from a Grafana 6.3.4-based product on a 12.2 base.",
+        evidence="Traced official source behavior, planned the customization, and directly built data retrieval and display changes.",
+        tech="React · Grafana source",
+    )
+    y = project(
+        c, y, period="OCT 2024 — NOV 2024", name="Kotoba Stripe", role="Frontend Developer", client="Kotoba",
+        summary="React payment and account experience combining multiple Stripe flows.",
+        evidence="Researched Stripe, proposed payment UI, implemented the flow, and worked 1:1 in English with a nontechnical client; accepted.",
+        tech="React · Stripe",
+    )
+    y = project(
+        c, y, period="AUG 2024 — FEB 2025", name="WorkOrder", role="Frontend Lead", client="Auto Magic",
+        summary="Commercial workflow builder for multiple customer companies.",
+        evidence="Led analysis, task breakdown and reviews, and directly built the workflow builder.",
+        tech="Next.js",
+    )
+    y = project(
+        c, y, period="FEB 2024 — JUN 2025", name="Workflow", role="Frontend Lead", client="Auto Magic",
+        summary="Internal workflow creation, task assignment, and progress tracking for a 4 FE / 3 BE team.",
+        evidence="Analyzed requirements with the Comtor/BA, split frontend work, and built custom/master-data workflow creation.",
+        tech="Next.js",
+    )
+    y = project(
+        c, y, period="AUG 2023 — JUN 2024", name="Commerce", role="Frontend Tech Lead · 3 FE", client="Auto Magic",
+        summary="Building and financial-data management with Google Maps, Terra Map, and formula settings.",
+        evidence="Decoded incomplete Japanese API documentation through testing, designed map flows, divided work, reviewed code, and built formula validation.",
+        tech="Next.js · Google Maps · Terra Map",
+    )
 
-    y -= 140
-    draw_rule(canvas, y)
-    y -= 27
-    draw_label(canvas, "How I work", x, y)
-    y -= 21
-    work_items = [
-        ("Collaborative by default", "Clear context, useful reviews, and decisions that help the whole team move."),
-        ("Always learning", "Curious about better patterns, modern tooling, and the details that make products easier to use."),
-        ("Grounded in delivery", "Connect design intent to implementation, testing, and the practical work of getting software shipped."),
-    ]
-    for title, copy in work_items:
-        canvas.setFillColor(NAVY)
-        canvas.setFont("PortfolioArial-Bold", 9.5)
-        canvas.drawString(x, y, title)
-        y -= 12
-        y = draw_text(canvas, copy, x, y, CONTENT_WIDTH, size=8.5, leading=11.5)
-        y -= 12
+    # Compact earlier career section.
+    y = section(c, "Earlier experience", y + 2)
+    c.setFillColor(INK)
+    c.setFont("CV-Bold", 9)
+    c.drawString(MARGIN, y, "Viettel Software Service · Mobile Developer")
+    c.setFillColor(BLUE)
+    c.setFont("CV-Bold", 7.5)
+    c.drawRightString(PAGE_W - MARGIN, y, "SEP 2022 — APR 2023")
+    y = text(c, "Built and integrated the React Native registration flow for an internal Viettel Family application. Released for internal use; details remain confidential.", MARGIN, y - 13, WIDTH, size=7.8, leading=10)
+    y -= 7
+    c.setFillColor(INK)
+    c.setFont("CV-Bold", 9)
+    c.drawString(MARGIN, y, "FPT Software · Software Engineer")
+    c.setFillColor(BLUE)
+    c.setFont("CV-Bold", 7.5)
+    c.drawRightString(PAGE_W - MARGIN, y, "SEP 2020 — AUG 2022")
+    y = text(c, "AIA Components: React / Storybook / Playwright component system using Atomic Design, delivered 1:1 in English and accepted. Requirement Tool: CKEditor toolbar/plugin, formatting, paste, template, and validation logic.", MARGIN, y - 13, WIDTH, size=7.8, leading=10)
+    y -= 7
+    c.setFillColor(INK)
+    c.setFont("CV-Bold", 9)
+    c.drawString(MARGIN, y, "Education")
+    text(c, "FPT University", MARGIN, y - 13, WIDTH, size=7.8, leading=10)
 
-    draw_rule(canvas, 74)
-    canvas.setFillColor(MUTED)
-    canvas.setFont("PortfolioArial", 8)
-    canvas.drawString(MARGIN, 56, "Interests: Basketball - Music - Trekking - Travel")
-    canvas.drawRightString(PAGE_WIDTH - MARGIN, 56, "anh-tuan portfolio")
-    canvas.save()
+    c.save()
 
 
 if __name__ == "__main__":

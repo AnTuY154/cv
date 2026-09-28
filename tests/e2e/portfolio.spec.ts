@@ -9,7 +9,7 @@ test.describe("portfolio smoke", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "vi");
     await expect(page).toHaveTitle(/Anh Tuấn/);
     await expect(page.getByRole("heading", { name: "Đỗ Trọng Anh Tuấn" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "Xem những dự án tiêu biểu" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Xem timeline dự án" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "OneAuto" }).first()).toBeVisible();
   });
 
@@ -25,9 +25,9 @@ test.describe("portfolio smoke", () => {
     expect(new URL(page.url()).hash).toBe("#about");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
-      page.getByRole("heading", { name: "A little more about me and how I work." }),
+      page.getByRole("heading", { name: "I’m Tuấn — a frontend engineer who cares about product clarity and delivery." }),
     ).toBeVisible();
-    await expect(page.getByRole("link", { name: "View selected work" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "View project timeline" })).toBeVisible();
     await expect(page.getByRole("button", { name: "English" })).toHaveAttribute(
       "aria-pressed",
       "true",
@@ -35,7 +35,7 @@ test.describe("portfolio smoke", () => {
 
     await page.reload();
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
-    await expect(page.getByRole("link", { name: "View selected work" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "View project timeline" })).toBeVisible();
 
     await page.goto("/projects/hp-booster");
     await expect(page.getByRole("heading", { name: "Where I contributed" })).toBeVisible();
@@ -50,7 +50,7 @@ test.describe("portfolio smoke", () => {
     const menuButton = page.getByRole("button", { name: "Mở menu điều hướng" });
     await menuButton.click();
     await expect(
-      page.locator("#mobile-navigation").getByRole("link", { name: "Công việc", exact: true }),
+      page.locator("#mobile-navigation").getByRole("link", { name: "Kinh nghiệm", exact: true }),
     ).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(page.getByRole("button", { name: "Mở menu điều hướng" })).toBeFocused();
@@ -103,7 +103,7 @@ test.describe("portfolio smoke", () => {
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
         viewport.width,
       );
-      await page.screenshot({ path: `test-results/home-${viewport.width}.png`, fullPage: true });
+      await page.screenshot({ path: `test-results/home-${viewport.width}.png` });
     }
   });
 });

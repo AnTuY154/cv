@@ -3,16 +3,16 @@ import type { Profile } from "@/content/types";
 export const profile: Profile = {
   name: "Đỗ Trọng Anh Tuấn",
   shortName: "Anh Tuấn",
-  role: "Frontend-focused Software Engineer",
-  headline: "I build clear, reliable web products with React and Next.js.",
+  role: "Frontend Engineer / Frontend Lead",
+  headline: "I turn complex operations into clear, maintainable interfaces.",
   summary:
-    "Frontend-focused Software Engineer with five years of experience building enterprise web products with React and Next.js. Experienced in design-system implementation, application modernization, SEO, data-rich interfaces, code review, and cross-functional delivery.",
+    "Frontend Engineer with six years of experience building and leading enterprise interfaces with React, Next.js, and Vue. Experienced in workflow systems, application modernization, UI systems, integrations, code review, and cross-functional delivery.",
   shortSummary:
-    "Five years across enterprise tools, dashboards, payment workflows, marketing platforms, and automotive service systems.",
+    "Six years across enterprise workflows, payment products, property systems, and automotive services.",
   location: "Hanoi, Vietnam",
-  yearsOfExperience: "5 years",
-  completedProjects: 14,
-  ongoingProjects: 1,
+  yearsOfExperience: "6 years",
+  completedProjects: 12,
+  ongoingProjects: 2,
   reactSince: "2020",
   nextSince: "2023",
   university: "FPT University",

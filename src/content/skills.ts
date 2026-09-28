@@ -2,28 +2,23 @@ import type { SkillGroup } from "@/content/types";
 
 export const skillGroups = [
   {
-    label: "Frontend",
-    description: "Interfaces that stay clear across screens and devices.",
-    skills: ["JavaScript", "React", "Next.js", "HTML", "CSS", "Responsive UI"],
+    label: "Frontend product engineering",
+    description: "Enterprise interfaces built around real operational workflows.",
+    skills: ["TypeScript", "React", "Next.js", "Vue 3", "Responsive UI"],
   },
   {
-    label: "UI engineering",
-    description: "Reusable components translated from design intent into maintainable UI.",
-    skills: ["Storybook", "Figma-to-code", "Component systems", "E2E testing"],
+    label: "UI systems",
+    description: "Reusable UI with documented behavior and repeatable verification.",
+    skills: ["Ant Design", "Storybook", "Atomic Design", "Playwright"],
   },
   {
-    label: "Backend & integration",
-    description: "Pragmatic integration work across product boundaries.",
-    skills: ["Node.js", "Express", "Java", "Python", "C#", "REST APIs"],
+    label: "Product integration",
+    description: "Frontend integration across payments, maps, APIs, and source-based products.",
+    skills: ["REST APIs", "Stripe", "Google Maps", "Terra Map", "Grafana"],
   },
   {
-    label: "Product integrations",
-    description: "Product-facing integrations where implementation details meet user workflows.",
-    skills: ["Stripe", "Google Maps", "Terra Map", "Grafana"],
-  },
-  {
-    label: "Delivery",
-    description: "A delivery habit built around shared context and steady quality.",
-    skills: ["GitLab", "Code review", "Estimation", "Deployment support", "SEO"],
+    label: "Frontend leadership",
+    description: "Turning requirements into plans that a frontend team can deliver clearly.",
+    skills: ["Estimation", "Task breakdown", "Code review", "UI/UX", "Client communication"],
   },
 ] satisfies readonly SkillGroup[];

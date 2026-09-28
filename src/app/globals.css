@@ -2463,3 +2463,339 @@ a:focus-visible {
     box-shadow: none;
   }
 }
+
+/* Recruiter-first portfolio: one chronological story, restrained visual system. */
+:root {
+  --color-primary: #1959d1;
+  --color-accent: #b94718;
+  --color-background: #f7f8fb;
+  --color-foreground: #172033;
+  --color-muted-foreground: #566176;
+  --color-border: #dfe3eb;
+  --color-soft-blue: #edf4ff;
+  --color-soft-orange: #fff2e9;
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand-copy strong {
+  font-family: var(--font-manrope), var(--font-inter), sans-serif;
+}
+
+.recruiter-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(360px, 0.75fr);
+  align-items: center;
+  gap: clamp(48px, 8vw, 112px);
+}
+
+.hero-employment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  color: var(--color-foreground);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.current-work-panel {
+  position: relative;
+  border-top: 4px solid var(--color-primary);
+  padding: clamp(28px, 4vw, 46px);
+  background: #fff;
+  box-shadow: 0 24px 70px rgb(23 32 51 / 10%);
+}
+
+.current-work-panel::before {
+  position: absolute;
+  inset: 12px -12px -12px 12px;
+  z-index: -1;
+  border: 1px solid #cbd7ee;
+  content: "";
+}
+
+.current-work-panel__topline,
+.career-project__heading,
+.career-project__footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.current-work-panel__topline .eyebrow {
+  margin: 0;
+}
+
+.current-work-panel__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #a63b12;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.current-work-panel__status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px rgb(228 93 34 / 12%);
+}
+
+.current-work-panel h2 {
+  margin: 24px 0 3px;
+  font-size: clamp(34px, 4vw, 48px);
+  letter-spacing: -0.05em;
+}
+
+.current-work-panel > p {
+  margin: 0;
+  color: var(--color-muted-foreground);
+}
+
+.current-work-panel ul {
+  display: grid;
+  gap: 8px;
+  margin: 26px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.current-work-panel li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.current-work-panel li::before {
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 7px;
+  height: 2px;
+  background: var(--color-accent);
+  content: "";
+}
+
+.current-work-panel .text-link {
+  margin-top: 22px;
+}
+
+.credibility-item {
+  min-height: 116px;
+}
+
+.credibility-item strong {
+  font-family: var(--font-manrope), var(--font-inter), sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.section-experience {
+  background: #fff;
+}
+
+.career-timeline {
+  display: grid;
+  margin-top: 58px;
+  border-top: 1px solid var(--color-border);
+}
+
+.career-company {
+  display: grid;
+  grid-template-columns: minmax(230px, 0.7fr) minmax(0, 2fr);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.career-company__header {
+  position: sticky;
+  top: 104px;
+  align-self: start;
+  padding: 40px 42px 40px 0;
+}
+
+.career-company__header h3 {
+  margin: 0 0 10px;
+  font-size: 25px;
+  letter-spacing: -0.035em;
+}
+
+.career-company__header strong {
+  display: block;
+  color: var(--color-primary);
+  font-size: 14px;
+}
+
+.career-company__header > p:last-child {
+  margin: 18px 0 0;
+  color: var(--color-muted-foreground);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.career-projects {
+  border-left: 1px solid var(--color-border);
+}
+
+.career-project {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.48fr) minmax(0, 1.52fr);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.career-project:last-child {
+  border-bottom: 0;
+}
+
+.career-project__period {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 40px 28px;
+  color: var(--color-muted-foreground);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.career-project__period svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: var(--color-primary);
+}
+
+.career-project__body {
+  border-left: 1px solid var(--color-border);
+  padding: 38px 0 38px 36px;
+}
+
+.career-project__domain {
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.career-project h4 {
+  margin: 5px 0 0;
+  font-size: 23px;
+  letter-spacing: -0.035em;
+}
+
+.career-project__meta {
+  margin: 8px 0 18px !important;
+  color: var(--color-muted-foreground);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.career-project__body > p:not(.career-project__meta):not(.career-project__highlight) {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--color-muted-foreground);
+}
+
+.career-project__highlight {
+  max-width: 72ch;
+  margin: 20px 0 0;
+  border-left: 3px solid var(--color-accent);
+  padding-left: 15px;
+  color: var(--color-foreground);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.career-project__footer {
+  align-items: flex-end;
+  margin-top: 24px;
+}
+
+.career-project__footer .tag-list {
+  margin: 0;
+}
+
+.career-project__footer .text-link {
+  flex: 0 0 auto;
+}
+
+.resume-project-item small {
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.skills-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 980px) {
+  .recruiter-hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .current-work-panel {
+    max-width: 720px;
+  }
+
+  .career-company {
+    grid-template-columns: 1fr;
+  }
+
+  .career-company__header {
+    position: static;
+    padding-right: 0;
+  }
+
+  .career-projects {
+    border-top: 1px solid var(--color-border);
+    border-left: 0;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-section {
+    padding-top: 64px;
+  }
+
+  .current-work-panel {
+    padding: 26px 22px;
+  }
+
+  .career-timeline {
+    margin-top: 38px;
+  }
+
+  .career-project {
+    grid-template-columns: 1fr;
+  }
+
+  .career-project__period {
+    padding: 24px 0 10px;
+  }
+
+  .career-project__body {
+    border-left: 0;
+    padding: 0 0 30px;
+  }
+
+  .career-project__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+}

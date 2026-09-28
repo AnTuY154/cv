@@ -2,7 +2,6 @@
 
 import { ArrowUpRight, BriefcaseBusiness, Layers3, Sparkles } from "lucide-react";
 
-import { profile } from "@/content/profile";
 import { useLanguage } from "@/components/i18n/language-provider";
 
 export function CredibilityStrip() {
@@ -15,16 +14,13 @@ export function CredibilityStrip() {
     },
     {
       icon: Layers3,
-      value: dictionary.credibility.projectsValue(
-        profile.completedProjects,
-        profile.ongoingProjects,
-      ),
-      label: dictionary.credibility.projectsLabel,
+      value: dictionary.credibility.projectsLabel,
+      label: "HBLAB · Viettel · FPT",
     },
     {
       icon: Sparkles,
-      value: dictionary.credibility.reactValue(profile.reactSince),
-      label: dictionary.credibility.nextLabel(profile.nextSince),
+      value: dictionary.credibility.reactValue(""),
+      label: dictionary.credibility.nextLabel(""),
     },
   ];
 

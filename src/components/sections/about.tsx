@@ -44,10 +44,6 @@ export function About() {
                   <dd>{profile.university}</dd>
                 </div>
                 <div>
-                  <dt>{dictionary.about.birthLabel}</dt>
-                  <dd>{dictionary.about.birthDate}</dd>
-                </div>
-                <div>
                   <dt>{dictionary.about.locationLabel}</dt>
                   <dd>{dictionary.location}</dd>
                 </div>

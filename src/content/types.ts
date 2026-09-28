@@ -9,17 +9,24 @@ export type ProjectDetail = {
   learnings?: readonly string[];
 };
 
+export type ProjectParticipation = "lead" | "contributor" | "reviewer";
+
 export type Project = {
   slug: string;
   name: string;
+  internalName?: string;
   period?: ProjectPeriod;
   company?: string;
   client?: string;
+  role?: string;
+  participation?: ProjectParticipation;
+  team?: string;
   domain: string;
   summary: string;
   challenge?: string;
   contribution?: string;
   responsibilities: readonly string[];
+  highlights?: readonly string[];
   technologies: readonly string[];
   outcomes?: readonly string[];
   featured: boolean;

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -15,6 +15,12 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const manrope = Manrope({
+  subsets: ["latin", "vietnamese"],
+  display: "swap",
+  variable: "--font-manrope",
+});
+
 export const metadata: Metadata = baseMetadata;
 
 export const viewport: Viewport = {
@@ -26,7 +32,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="vi" className={inter.variable}>
+    <html lang="vi" className={`${inter.variable} ${manrope.variable}`}>
       <body id="top" className={inter.className}>
         <LanguageProvider>
           <SkipLink />

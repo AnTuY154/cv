@@ -11,6 +11,7 @@ export type ProjectCopy = {
   technicalDecisions?: readonly string[];
   learnings?: readonly string[];
   outcomes?: readonly string[];
+  highlights?: readonly string[];
 };
 
 type PrincipleCopy = {
@@ -52,6 +53,7 @@ export type LocaleDictionary = {
     email: string;
     currentFocus: string;
     currentProjectDomain: string;
+    currentProjectScope: readonly string[];
     ongoing: string;
     visualLabel: string;
     visualCaption: string;
@@ -183,7 +185,7 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
   vi: {
     languageLabel: "Ngôn ngữ",
     languageOptions: { vi: "Tiếng Việt", en: "Tiếng Anh" },
-    role: "Software Engineer định hướng Frontend",
+    role: "Frontend Engineer / Frontend Lead",
     location: "Hà Nội, Việt Nam",
     navigation: {
       work: "Công việc",
@@ -200,33 +202,34 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       skipToMain: "Tới nội dung chính",
     },
     hero: {
-      headline: "Mình xây dựng những sản phẩm web rõ ràng, đáng tin cậy với React và Next.js.",
+      headline: "Mình biến những quy trình phức tạp thành giao diện rõ ràng, dễ duy trì.",
       description:
-        "Mình là Software Engineer định hướng Frontend với 5 năm kinh nghiệm xây dựng sản phẩm web doanh nghiệp bằng React và Next.js. Mình có kinh nghiệm triển khai design system, hiện đại hóa ứng dụng, SEO, giao diện giàu dữ liệu, review code và phối hợp để đưa sản phẩm đi tiếp.",
-      viewWork: "Xem những dự án tiêu biểu",
+        "Mình có 6 năm kinh nghiệm với React, Next.js và Vue, từ trực tiếp phát triển sản phẩm đến dẫn dắt frontend, chia task, review code và làm việc cùng BA hoặc khách hàng.",
+      viewWork: "Xem timeline dự án",
       downloadCv: "Tải CV",
       profileLinks: "Các liên kết hồ sơ",
       github: "GitHub",
       email: "Email",
       currentFocus: "Đang tập trung",
-      currentProjectDomain: "Dịch vụ xưởng ô tô",
+      currentProjectDomain: "Vận hành xưởng dịch vụ ô tô",
+      currentProjectScope: ["Lệnh sửa chữa", "Bán lẻ phụ kiện", "Quản lý cứu hộ"],
       ongoing: "Đang thực hiện",
-      visualLabel: "Hình minh họa trừu tượng về code và hệ thống sản phẩm",
-      visualCaption: "Tư duy hệ thống · trau chuốt giao diện · kỹ lưỡng khi delivery",
+      visualLabel: "Thông tin công việc hiện tại tại OneAuto",
+      visualCaption: "HBLAB · Onsite TASCO · Frontend Developer",
     },
     credibility: {
       sectionLabel: "Điểm nổi bật về kinh nghiệm",
-      yearsValue: "5 năm",
-      deliveryLabel: "trong lĩnh vực phát triển phần mềm",
+      yearsValue: "6 năm",
+      deliveryLabel: "kinh nghiệm frontend",
       projectsValue: (completed, ongoing) =>
         `${completed} dự án đã hoàn thành + ${ongoing} đang thực hiện`,
-      projectsLabel: "trong hồ sơ dự án",
-      reactValue: (since) => `React từ ${since}`,
-      nextLabel: (since) => `Next.js từ ${since}`,
+      projectsLabel: "Developer → Frontend Lead",
+      reactValue: () => "React · Next.js · Vue 3",
+      nextLabel: () => "Xây dựng · tích hợp · dẫn dắt",
     },
     work: {
-      eyebrow: "Những bài toán mình đã tham gia",
-      title: "Một hồ sơ thực tế về các sản phẩm và nền tảng.",
+      eyebrow: "Timeline dự án",
+      title: "Công việc mới nhất trước, bằng chứng cụ thể ngay bên dưới.",
       description:
         "Sáu dự án có câu chuyện đã được xác nhận rõ nhất, từ dịch vụ ô tô đến hệ thống component và công việc hiện đại hóa.",
       timelineLink: "Xem toàn bộ timeline",
@@ -237,25 +240,25 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       technologiesAriaLabel: (projectName) => `Công nghệ của ${projectName}`,
     },
     experience: {
-      eyebrow: "Kinh nghiệm",
-      title: "Năm năm làm việc qua nhiều bối cảnh sản phẩm khác nhau.",
+      eyebrow: "Kinh nghiệm & dự án",
+      title: "Sáu năm phát triển từ người triển khai thành người dẫn dắt frontend.",
       description:
-        "Timeline theo công ty giúp phần kinh nghiệm dễ theo dõi mà không lặp lại cùng một chức danh ở mọi dự án.",
+        "Các dự án được xếp theo hoạt động gần nhất. Nhiều dự án chạy song song theo phân bổ công việc, không phải nhiều công việc full-time.",
       currentProjectLabel: "Bối cảnh dự án hiện tại",
       currentProjectDescription:
         "Các dịch vụ đang được phát triển cho xưởng dịch vụ ô tô trong hệ sinh thái TASCO.",
       ongoing: "Đang thực hiện",
       viewScope: "Xem phạm vi dự án đã xác nhận",
       companyTitles: {
-        "HBLAB JSC": "Kỹ sư phần mềm",
-        "Viettel Software Service": "Kỹ sư phần mềm",
+        "HBLAB JSC": "Frontend Developer → Frontend Lead",
+        "Viettel Software Service": "Mobile Developer",
         "FPT Software": "Kỹ sư phần mềm",
       },
       companyDescriptions: {
         "HBLAB JSC":
-          "Mình đã làm việc qua các công cụ quản lý, dashboard, thanh toán, observability và nền tảng marketing.",
+          "Phát triển và dẫn dắt frontend qua các sản phẩm ô tô, workflow, tài chính tòa nhà, thanh toán, bản đồ và marketing.",
         "Viettel Software Service":
-          "Mình đã phát triển phần mềm cho các quy trình đăng ký và kiểm tra của Viettel Family.",
+          "Phát triển React Native cho luồng đăng ký thi đua nội bộ của Viettel Family.",
         "FPT Software": "Mình đã làm việc qua công cụ yêu cầu và hệ thống component.",
       },
     },
@@ -264,39 +267,34 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       title: "Công cụ có ý nghĩa hơn khi được đặt cạnh loại công việc chúng hỗ trợ.",
       description:
         "Một bản đồ năng lực thay cho logo cloud: trau chuốt giao diện, chiều sâu tích hợp và thói quen delivery nằm trong cùng một bức tranh.",
-      index: "05 / 05",
+      index: "04 / 04",
       groups: {
-        Frontend: {
-          label: "Frontend",
-          description: "Những giao diện rõ ràng trên nhiều màn hình và thiết bị.",
+        "Frontend product engineering": {
+          label: "Kỹ thuật sản phẩm frontend",
+          description: "Giao diện doanh nghiệp được xây quanh workflow vận hành thực tế.",
         },
-        "UI engineering": {
-          label: "Kỹ thuật UI",
-          description: "Component có thể tái sử dụng, chuyển từ ý đồ thiết kế thành UI dễ bảo trì.",
+        "UI systems": {
+          label: "Hệ thống UI",
+          description: "Component tái sử dụng có tài liệu và cách kiểm chứng rõ ràng.",
         },
-        "Backend & integration": {
-          label: "Backend & tích hợp",
-          description: "Công việc tích hợp thực tế giữa các ranh giới sản phẩm.",
-        },
-        "Product integrations": {
+        "Product integration": {
           label: "Tích hợp sản phẩm",
-          description:
-            "Những tích hợp hướng đến người dùng, nơi chi tiết kỹ thuật gặp workflow thực tế.",
+          description: "Tích hợp API, thanh toán, bản đồ và sản phẩm dựa trên mã nguồn mở.",
         },
-        Delivery: {
-          label: "Delivery",
-          description: "Thói quen delivery dựa trên bối cảnh chung và chất lượng ổn định.",
+        "Frontend leadership": {
+          label: "Dẫn dắt frontend",
+          description: "Biến yêu cầu thành kế hoạch mà team có thể triển khai và kiểm chứng.",
         },
       },
     },
     about: {
       eyebrow: "Về mình",
-      title: "Mình là Tuấn — và đây là cách mình tiếp tục học hỏi.",
+      title: "Mình là Tuấn — một frontend engineer quan tâm cả sản phẩm lẫn cách team delivery.",
       description: "Một chút về con người, cách mình làm việc và những điều mình đang trau dồi.",
       storyEyebrow: "Câu chuyện của mình",
       story: [
-        "Chào mừng bạn đến với trang giới thiệu của mình. Mình là Tuấn, cựu sinh viên FPT University và là Software Engineer định hướng Frontend. Với 5 năm kinh nghiệm trong nghề, mình không chỉ trau dồi kỹ năng lập trình mà còn chủ động tìm hiểu nghiệp vụ, quy trình sản phẩm và những kiến thức quản lý giúp đội ngũ phối hợp tốt hơn và tạo ra phần mềm hữu ích.",
-        "Mình sinh ngày 15/04/1999. Hiện tại, mình đang tiếp tục học hỏi qua những bài toán sản phẩm thực tế, đặc biệt là cách biến yêu cầu phức tạp thành trải nghiệm rõ ràng, dễ dùng và có thể duy trì lâu dài.",
+        "Mình là Tuấn, cựu sinh viên FPT University và là Frontend Engineer với 6 năm kinh nghiệm. Mình đã làm việc từ vai trò developer đến frontend lead trên các sản phẩm vận hành doanh nghiệp, workflow, thanh toán, bản đồ và dịch vụ ô tô.",
+        "Ngoài code, mình quan tâm đến nghiệp vụ, cách thiết kế luồng, chia nhỏ công việc và review để team cùng tạo ra phần mềm rõ ràng, dễ dùng và dễ duy trì.",
       ],
       detailsEyebrow: "Một chút về mình",
       universityLabel: "Học vấn",
@@ -415,12 +413,21 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       "Workflow administration": "Quản trị workflow",
       "Data dashboard": "Dashboard dữ liệu",
       "SEO modernization": "Hiện đại hóa SEO",
+      "Property finance": "Tài chính tòa nhà",
+      "File management": "Quản lý tệp",
+      "Workflow management": "Quản lý workflow",
+      "Document workflow": "Tài liệu PDF",
+      "Workforce management": "Quản lý nhân sự",
+      "Commercial workflow product": "Sản phẩm workflow",
+      "Identity and access": "Danh tính & phân quyền",
+      "Internal registration workflow": "Đăng ký nội bộ",
+      "Enterprise requirements": "Quản lý yêu cầu",
     },
   },
   en: {
     languageLabel: "Language",
     languageOptions: { vi: "Vietnamese", en: "English" },
-    role: "Frontend-focused Software Engineer",
+    role: "Frontend Engineer / Frontend Lead",
     location: "Hanoi, Vietnam",
     navigation: {
       work: "Work",
@@ -437,32 +444,33 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       skipToMain: "Skip to main content",
     },
     hero: {
-      headline: "I build clear, reliable web products with React and Next.js.",
+      headline: "I turn complex operations into clear, maintainable interfaces.",
       description:
-        "I am a frontend-focused Software Engineer with five years of experience building enterprise web products with React and Next.js. I work across design-system implementation, application modernization, SEO, data-rich interfaces, code review, and cross-functional delivery.",
-      viewWork: "View selected work",
+        "I have six years of experience with React, Next.js, and Vue, from hands-on product delivery to frontend leadership, task breakdown, code review, and direct collaboration with business analysts and clients.",
+      viewWork: "View project timeline",
       downloadCv: "Download CV",
       profileLinks: "Profile links",
       github: "GitHub",
       email: "Email",
       currentFocus: "Current focus",
-      currentProjectDomain: "Automotive workshop services",
+      currentProjectDomain: "Automotive workshop operations",
+      currentProjectScope: ["Repair orders", "Accessory sales", "Roadside assistance"],
       ongoing: "Ongoing",
-      visualLabel: "Abstract code and product systems visual",
-      visualCaption: "Systems thinking · interface craft · delivery detail",
+      visualLabel: "Current OneAuto engagement",
+      visualCaption: "HBLAB · Onsite TASCO · Frontend Developer",
     },
     credibility: {
       sectionLabel: "Experience highlights",
-      yearsValue: "Five years",
-      deliveryLabel: "in software delivery",
+      yearsValue: "Six years",
+      deliveryLabel: "in frontend engineering",
       projectsValue: (completed, ongoing) => `${completed} completed + ${ongoing} ongoing`,
-      projectsLabel: "projects in the portfolio record",
-      reactValue: (since) => `React since ${since}`,
-      nextLabel: (since) => `Next.js since ${since}`,
+      projectsLabel: "Developer → Frontend Lead",
+      reactValue: () => "React · Next.js · Vue 3",
+      nextLabel: () => "Build · integrate · lead",
     },
     work: {
-      eyebrow: "Problems I have worked on",
-      title: "A practical record of products and platforms.",
+      eyebrow: "Project timeline",
+      title: "Recent work first, with concrete evidence beneath it.",
       description:
         "Six projects with the clearest verified story, from automotive services to component systems and modernization work.",
       timelineLink: "See the wider timeline",
@@ -473,25 +481,25 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       technologiesAriaLabel: (projectName) => `${projectName} technologies`,
     },
     experience: {
-      eyebrow: "Experience",
-      title: "Five years of working across different product contexts.",
+      eyebrow: "Experience & projects",
+      title: "Six years of growth from hands-on developer to frontend lead.",
       description:
-        "A company-grouped view keeps the timeline useful without repeating the same title on every project.",
+        "Projects are ordered by most recent activity. Several ran in parallel as allocated engagements, not separate full-time jobs.",
       currentProjectLabel: "Current project context",
       currentProjectDescription:
         "Ongoing services for automotive workshops in the TASCO ecosystem.",
       ongoing: "Ongoing",
       viewScope: "View verified project scope",
       companyTitles: {
-        "HBLAB JSC": "Software Engineer",
-        "Viettel Software Service": "Software Engineer",
+        "HBLAB JSC": "Frontend Developer → Frontend Lead",
+        "Viettel Software Service": "Mobile Developer",
         "FPT Software": "Software Engineer",
       },
       companyDescriptions: {
         "HBLAB JSC":
-          "I worked across management tools, dashboards, payments, observability, and marketing platforms.",
+          "Frontend delivery and leadership across automotive services, workflows, property systems, payments, maps, and marketing platforms.",
         "Viettel Software Service":
-          "I developed software for Viettel Family registration and audit workflows.",
+          "React Native delivery for an internal Viettel Family competition-registration flow.",
         "FPT Software": "I worked across enterprise requirements and component-system work.",
       },
     },
@@ -500,40 +508,35 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       title: "The tools make more sense when grouped by the work they support.",
       description:
         "A capability map instead of a logo cloud: interface craft, integration depth, and delivery habits sit together.",
-      index: "05 / 05",
+      index: "04 / 04",
       groups: {
-        Frontend: {
-          label: "Frontend",
-          description: "Interfaces that stay clear across screens and devices.",
+        "Frontend product engineering": {
+          label: "Frontend product engineering",
+          description: "Enterprise interfaces built around real operational workflows.",
         },
-        "UI engineering": {
-          label: "UI engineering",
-          description: "Reusable components translated from design intent into maintainable UI.",
+        "UI systems": {
+          label: "UI systems",
+          description: "Reusable UI with documented behavior and repeatable verification.",
         },
-        "Backend & integration": {
-          label: "Backend & integration",
-          description: "Pragmatic integration work across product boundaries.",
+        "Product integration": {
+          label: "Product integration",
+          description: "Frontend integration across APIs, payments, maps, and source-based products.",
         },
-        "Product integrations": {
-          label: "Product integrations",
-          description:
-            "Product-facing integrations where implementation details meet user workflows.",
-        },
-        Delivery: {
-          label: "Delivery",
-          description: "A delivery habit built around shared context and steady quality.",
+        "Frontend leadership": {
+          label: "Frontend leadership",
+          description: "Turning requirements into plans a frontend team can deliver and verify.",
         },
       },
     },
     about: {
       eyebrow: "About",
-      title: "A little more about me and how I work.",
+      title: "I’m Tuấn — a frontend engineer who cares about product clarity and delivery.",
       description:
         "A personal view of the person, working principles, and interests behind the projects.",
       storyEyebrow: "My story",
       story: [
-        "Welcome to my profile. I’m Tuấn, an FPT University alumnus and a frontend-focused Software Engineer. With five years of professional experience, I keep developing beyond coding — learning the product domains, business processes, and management practices that help teams collaborate well and build useful software.",
-        "I was born on 15 April 1999. Today, I continue learning through real product problems, especially how to turn complex requirements into experiences that are clear, useful, and maintainable.",
+        "I’m Tuấn, an FPT University alumnus and a Frontend Engineer with six years of experience. I have grown from developer to frontend lead across enterprise operations, workflows, payments, maps, and automotive services.",
+        "Beyond code, I care about product context, flow design, task breakdown, and review practices that help teams build software that is clear, useful, and maintainable.",
       ],
       detailsEyebrow: "A little more about me",
       universityLabel: "Education",
@@ -652,6 +655,15 @@ export const dictionaries: Record<Language, LocaleDictionary> = {
       "Workflow administration": "Workflow administration",
       "Data dashboard": "Data dashboard",
       "SEO modernization": "SEO modernization",
+      "Property finance": "Property finance",
+      "File management": "File management",
+      "Workflow management": "Workflow management",
+      "Document workflow": "Document workflow",
+      "Workforce management": "Workforce management",
+      "Commercial workflow product": "Commercial workflow product",
+      "Identity and access": "Identity and access",
+      "Internal registration workflow": "Internal registration workflow",
+      "Enterprise requirements": "Enterprise requirements",
     },
   },
 };
@@ -803,6 +815,133 @@ const projectCopies: Record<Language, Record<string, ProjectCopy>> = {
   },
 };
 
+const recruiterProjectCopies: Record<Language, Record<string, ProjectCopy>> = {
+  vi: {
+    oneauto: {
+      summary: "Các luồng vận hành xưởng dịch vụ ô tô trong hệ sinh thái TASCO.",
+      challenge:
+        "Các luồng sửa chữa, bán lẻ phụ kiện và cứu hộ cần rõ ràng khi nhân viên thao tác với dữ liệu khách hàng và chủ xe.",
+      contribution:
+        "Phân tích yêu cầu, thiết kế luồng, phát triển frontend, tích hợp API, validation, phân quyền và kiểm thử.",
+      responsibilities: [
+        "Xây dựng luồng lệnh sửa chữa, bán lẻ phụ kiện và quản lý cứu hộ.",
+        "Phối hợp với BA để chuyển nghiệp vụ vận hành thành luồng dễ sử dụng.",
+        "Tích hợp API, validation, phân quyền và kiểm thử frontend.",
+      ],
+      highlights: [
+        "Đề xuất và triển khai drawer tạo hoặc cập nhật khách hàng/chủ xe ngay trong màn hình lệnh, giúp người dùng không phải rời luồng hiện tại.",
+      ],
+      context: "Nhân sự HBLAB làm việc onsite full-time tại Tập đoàn TASCO.",
+    },
+    property: {
+      summary: "Tái xây dựng hệ thống kế toán và thông tin tài chính tòa nhà đã cũ.",
+      challenge: "UI, codebase và tài liệu cũ không còn phù hợp để tiếp tục phát triển sản phẩm.",
+      contribution:
+        "Dựng lại UI, nghiên cứu hành vi và API cũ, đồng thời hỗ trợ BA khôi phục nghiệp vụ từ hệ thống hiện hữu.",
+      responsibilities: [
+        "Phối hợp với BA tái hiện nghiệp vụ khi tài liệu cũ thiếu hoặc lỗi thời.",
+        "Xây dựng giao diện mới và tích hợp API.",
+      ],
+      highlights: ["Tạo ra giao diện dễ dùng hơn trên nền frontend hiện đại và dễ duy trì hơn."],
+    },
+    "hp-booster": {
+      summary: "Nền tảng tạo website marketing kéo-thả được chuyển từ React sang Next.js.",
+      challenge: "React SPA ban đầu không còn phù hợp với nhu cầu SEO và quy mô delivery của sản phẩm.",
+      contribution:
+        "Đánh giá lại nền tảng, lập kế hoạch migration, trực tiếp xử lý phần cốt lõi và phối hợp ba frontend developer.",
+      responsibilities: [
+        "Lập kế hoạch và thực hiện migration React sang Next.js.",
+        "Chia task và phối hợp ba frontend developer.",
+        "Xử lý vấn đề migration trong khi giữ hành vi của builder hiện tại.",
+      ],
+      highlights: ["Cải thiện nền tảng SEO, khả năng bảo trì và mức độ phù hợp với quy mô dự án."],
+    },
+    "commerce-convert": {
+      summary: "Migration React sang Next.js để cải thiện SEO và thống nhất framework.",
+      contribution:
+        "Đánh giá thư viện, định hướng migration, hướng dẫn thành viên còn lại và review phần code chuyển đổi.",
+      highlights: ["Chuẩn hóa sản phẩm trên Next.js và cải thiện nền tảng SEO."],
+    },
+    kpro: {
+      summary: "Sản phẩm quản lý tệp với cấu trúc điều hướng phân cấp sâu.",
+      challenge: "Cây dữ liệu có số lượng node lớn và nhiều cấp lồng nhau.",
+      contribution:
+        "Phát triển từ developer lên frontend lead, tham gia UI/UX, thiết kế giải pháp, chia task và review code.",
+      responsibilities: [
+        "Xây dựng upload file và danh sách file.",
+        "Thiết kế và triển khai menu cây ở sidebar trái.",
+        "Hỗ trợ giải pháp, chia task, UI/UX và review code với vai trò lead.",
+      ],
+      highlights: ["Dùng infinite loading cho cây dữ liệu lớn và sâu để cải thiện hiệu năng giao diện."],
+    },
+    "grafana-tools": {
+      summary: "Tái triển khai các tùy biến của khách hàng trên nền Grafana 12.2.",
+      challenge:
+        "Sản phẩm cũ được custom từ Grafana 6.3.4 và cần giữ hành vi riêng khi chuyển sang base mới.",
+      contribution:
+        "Tìm chức năng tương ứng trong source Grafana chính thức, nghiên cứu cách hoạt động, lập kế hoạch và trực tiếp custom bằng React.",
+    },
+    workflow: {
+      summary: "Hệ thống nội bộ để tạo workflow, giao task và theo dõi tiến độ.",
+      contribution: "Phân tích yêu cầu cùng Comtor/BA, chia task frontend và trực tiếp xây dựng phần tạo workflow.",
+    },
+    "pfd-maintain": {
+      summary: "Phần mở rộng ngắn bổ sung upload và xem PDF trong bối cảnh KPro.",
+      contribution: "Review giải pháp và phần triển khai, không trực tiếp xây dựng tính năng.",
+    },
+    "musa-pms": {
+      summary: "Trang admin quản lý công việc, thời gian, ngày làm và ngày nghỉ của nhân viên.",
+      contribution: "Lead phần estimate và delivery frontend, đồng thời custom giao diện timeline Gantt.",
+      highlights: ["Khách hàng đã nghiệm thu giao diện được bàn giao."],
+    },
+    workorder: {
+      summary: "Workflow builder thương mại cho phép nhiều công ty tự cấu hình quy trình riêng.",
+      contribution: "Lead phân tích, chia task, review và trực tiếp xây dựng workflow builder.",
+    },
+    "kotoba-stripe": {
+      summary: "Trải nghiệm thanh toán React kết hợp nhiều luồng Stripe và quản lý tài khoản.",
+      contribution:
+        "Nghiên cứu Stripe, đề xuất UI thanh toán, trực tiếp triển khai và trao đổi 1:1 bằng tiếng Anh với khách hàng.",
+      highlights: ["Khách hàng đã nghiệm thu và phản hồi tích cực."],
+    },
+    commerce: {
+      summary: "Quản lý tòa nhà và nghiệp vụ tài chính với Google Maps và Terra Map.",
+      challenge: "Tài liệu Terra Map chủ yếu bằng tiếng Nhật và thiếu nhiều chi tiết về hành vi API.",
+      contribution:
+        "Thiết kế luồng API bản đồ, xây dựng hiển thị tòa nhà, chia task, review code và triển khai setting công thức.",
+      highlights: ["Biến tài liệu bên thứ ba chưa đầy đủ thành một tích hợp bản đồ hoạt động ổn định."],
+    },
+    account: {
+      summary: "Quản lý người dùng và phân quyền tập trung cho các sản phẩm như KPro.",
+      contribution: "Thiết kế và tích hợp mô hình phân quyền User → Group → Role.",
+    },
+    "viettel-family-registration": {
+      summary: "Luồng đăng ký mobile nội bộ cho hoạt động thi đua Viettel Family.",
+      contribution: "Xây dựng luồng ứng dụng và tích hợp API bằng React Native.",
+      highlights: ["Đã phát hành để sử dụng nội bộ tại Viettel."],
+    },
+    "aia-components": {
+      summary: "Hệ thống React component tái sử dụng theo Atomic Design.",
+      contribution:
+        "Làm việc 1:1 bằng tiếng Anh với đại diện khách hàng người Malaysia và bàn giao component có tài liệu, kiểm thử.",
+      responsibilities: [
+        "Xây dựng Button, Select và Select hỗ trợ infinite scroll.",
+        "Mô tả hành vi bằng Storybook và kiểm thử bằng Playwright.",
+      ],
+      highlights: ["Khách hàng đã nghiệm thu bộ component."],
+    },
+    "requirement-tool": {
+      summary: "Công cụ React giúp BA soạn thảo và quản lý yêu cầu phần mềm.",
+      contribution: "Xử lý logic CKEditor cho nghiệp vụ soạn thảo yêu cầu.",
+      responsibilities: [
+        "Tùy biến toolbar và plugin CKEditor.",
+        "Xử lý format, nội dung paste, template yêu cầu và validation.",
+      ],
+    },
+  },
+  en: {},
+};
+
 export function getProjectCopy(project: Project, language: Language): ProjectCopy {
   const fallback: ProjectCopy = {
     summary: project.summary,
@@ -813,9 +952,14 @@ export function getProjectCopy(project: Project, language: Language): ProjectCop
     technicalDecisions: project.detail?.technicalDecisions,
     learnings: project.detail?.learnings,
     outcomes: project.outcomes,
+    highlights: project.highlights,
   };
 
-  return { ...fallback, ...projectCopies[language][project.slug] };
+  return {
+    ...fallback,
+    ...projectCopies[language][project.slug],
+    ...recruiterProjectCopies[language][project.slug],
+  };
 }
 
 export function getDomainLabel(domain: string, language: Language): string {
